@@ -60,6 +60,12 @@ stages {
       nexusPublisher nexusInstanceId: '1234', nexusRepositoryId: 'maven-releases', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: 'target/helloworld.war']], mavenCoordinate: [artifactId: 'hello-world-servlet-example', groupId: 'com.geekcap.vmturbo', packaging: 'war', version: '$BUILD_NUMBER']]]
       }
  }
+    
+     stage('Update Artifact Version') {
+      steps {
+        sh label: '', script: '''sed -i s/artifactversion/$BUILD_NUMBER/ deploy.yml'''
+      }
+ }
      stage('Deploy War') {
       steps {
         sh label: '', script: 'ansible-playbook deploy.yml'
